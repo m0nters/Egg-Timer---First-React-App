@@ -1,6 +1,7 @@
 # Egg Timer React App
 
 A simple and elegant egg timer application built with React and TypeScript.
+
 Idea: https://www.youtube.com/watch?v=4TODW-IP4XM
 
 ## Features
