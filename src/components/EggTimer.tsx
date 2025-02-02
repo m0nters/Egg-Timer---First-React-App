@@ -13,8 +13,18 @@ function EggTimer({ mode, onCancel }: TimerProps) {
   const [timeLeft, setTimeLeft] = useState(mode.time);
   const [isActive, setIsActive] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [play, { stop }] = useSound("/src/assets/sounds/timer-done.wav", {
-    loop: true,
+
+  // Alarm sound
+  const [playAlarm, { stop: stopAlarm }] = useSound(
+    "/src/assets/sounds/timer-done.wav",
+    {
+      loop: true,
+    }
+  );
+
+  // Ticking sound
+  const [playTick] = useSound("/src/assets/sounds/tick.mp3", {
+    volume: 0.5,
   });
 
   useEffect(() => {
@@ -23,31 +33,37 @@ function EggTimer({ mode, onCancel }: TimerProps) {
     if (isActive && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((time) => time - 1);
+        playTick(); // Play tick sound every second
       }, 1000);
     } else if (timeLeft === 0) {
-      play();
+      playAlarm();
       setIsPlaying(true);
     }
 
+    // Cleanup function
     return () => {
       clearInterval(interval);
-      if (isPlaying) stop();
+      if (isPlaying) {
+        stopAlarm(); // Use stopAlarm instead of stop
+        setIsPlaying(false);
+      }
     };
-  }, [isActive, timeLeft, play, stop, isPlaying]);
+  }, [isActive, timeLeft, playAlarm, stopAlarm, playTick, isPlaying]);
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
   const handleSnooze = () => {
-    stop();
+    stopAlarm();
     setIsPlaying(false);
     setTimeLeft(60);
     setIsActive(true);
   };
 
   const handleStop = () => {
-    stop();
+    stopAlarm();
     setIsPlaying(false);
+    setIsActive(false);
     onCancel();
   };
 
@@ -60,7 +76,7 @@ function EggTimer({ mode, onCancel }: TimerProps) {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">{mode.name}</h2>
         <button
-          onClick={onCancel}
+          onClick={handleStop}
           className="p-2 hover:bg-gray-100 rounded-full"
         >
           <X size={24} />
