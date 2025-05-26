@@ -4,6 +4,8 @@ A simple and elegant egg timer application built with React and TypeScript.
 
 Idea: https://www.youtube.com/watch?v=4TODW-IP4XM
 
+Live demo: https://egg-timer-ruby.vercel.app/
+
 ## Features
 
 - Four cooking modes: Soft (3 min), Medium (5 min), Hard (7 min), and Extra Hard (10 min)

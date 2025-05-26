@@ -16,14 +16,14 @@ function EggTimer({ mode, onCancel }: TimerProps) {
 
   // Alarm sound
   const [playAlarm, { stop: stopAlarm }] = useSound(
-    "/src/assets/sounds/timer-done.wav",
+    "/assets/sounds/timer-done.wav",
     {
       loop: true,
     }
   );
 
   // Ticking sound
-  const [playTick] = useSound("/src/assets/sounds/tick.mp3", {
+  const [playTick] = useSound("/assets/sounds/tick.mp3", {
     volume: 0.5,
   });
 

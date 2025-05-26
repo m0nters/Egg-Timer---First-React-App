@@ -9,13 +9,13 @@ export type EggMode = {
 };
 
 export const EGG_MODES: EggMode[] = [
-  { name: "Soft", time: 3 * 60, image: "/src/assets/images/soft.jpg" },
-  { name: "Medium", time: 5 * 60, image: "/src/assets/images/medium.jpg" },
-  { name: "Hard", time: 7 * 60, image: "/src/assets/images/hard.jpg" },
+  { name: "Soft", time: 3 * 60, image: "/assets/images/soft.jpg" },
+  { name: "Medium", time: 5 * 60, image: "/assets/images/medium.jpg" },
+  { name: "Hard", time: 7 * 60, image: "/assets/images/hard.jpg" },
   {
     name: "Extra Hard",
     time: 10 * 60,
-    image: "/src/assets/images/extra-hard.jpg",
+    image: "/assets/images/extra-hard.jpg",
   },
 ];
 
