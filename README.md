@@ -36,7 +36,11 @@ Idea: https://www.youtube.com/watch?v=4TODW-IP4XM
    ```sh
    npm install
    ```
-4. Start the development server:
+4. Build out the CSS (TailwindCSS 3.4.17):
+   ```sh
+   npm run build:css
+   ```
+5. Start the development server:
    ```sh
    npm run dev
    ```
