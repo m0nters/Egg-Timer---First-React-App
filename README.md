@@ -24,7 +24,7 @@ Live demo: https://egg-timer-ruby.vercel.app/
 - use-sound
 - Phosphor Icons
 
-## Installation
+## Development Installation
 
 1. Clone the repository:
    ```sh
@@ -38,14 +38,30 @@ Live demo: https://egg-timer-ruby.vercel.app/
    ```sh
    npm install
    ```
-4. Build out the CSS (TailwindCSS 3.4.17):
-   ```sh
-   npm run build:css
-   ```
-5. Start the development server:
+4. Start the development server:
    ```sh
    npm run dev
    ```
+
+## Production Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/m0nters/Egg-Timer---First-React-App.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd Egg-Timer---First-React-App
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Build for production:
+   ```sh
+   npm run build
+   ```
+5. Deploy the `dist` folder to your web server
 
 ## License
 

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import useSound from "use-sound";
 import { Timer, X } from "@phosphor-icons/react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import useSound from "use-sound";
 import type { EggMode } from "../App";
 
 type TimerProps = {
@@ -11,16 +11,11 @@ type TimerProps = {
 
 function EggTimer({ mode, onCancel }: TimerProps) {
   const [timeLeft, setTimeLeft] = useState(mode.time);
-  const [isActive, setIsActive] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   // Alarm sound
-  const [playAlarm, { stop: stopAlarm }] = useSound(
-    "/assets/sounds/timer-done.wav",
-    {
-      loop: true,
-    }
-  );
+  const [playAlarm, { stop }] = useSound("/assets/sounds/timer-done.wav", {
+    loop: true,
+  });
 
   // Ticking sound
   const [playTick] = useSound("/assets/sounds/tick.mp3", {
@@ -30,40 +25,31 @@ function EggTimer({ mode, onCancel }: TimerProps) {
   useEffect(() => {
     let interval: number;
 
-    if (isActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((time) => time - 1);
-        playTick(); // Play tick sound every second
+    if (timeLeft > 0) {
+      playTick();
+      interval = setTimeout(() => {
+        setTimeLeft((timeLeft) => timeLeft - 1);
       }, 1000);
     } else if (timeLeft === 0) {
       playAlarm();
-      setIsPlaying(true);
     }
 
     // Cleanup function
     return () => {
-      clearInterval(interval);
-      if (isPlaying) {
-        stopAlarm(); // Use stopAlarm instead of stop
-        setIsPlaying(false);
-      }
+      clearTimeout(interval);
     };
-  }, [isActive, timeLeft, playAlarm, stopAlarm, playTick, isPlaying]);
+  }, [timeLeft]);
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
   const handleSnooze = () => {
-    stopAlarm();
-    setIsPlaying(false);
+    stop();
     setTimeLeft(60);
-    setIsActive(true);
   };
 
   const handleStop = () => {
-    stopAlarm();
-    setIsPlaying(false);
-    setIsActive(false);
+    stop();
     onCancel();
   };
 
@@ -71,33 +57,39 @@ function EggTimer({ mode, onCancel }: TimerProps) {
     <motion.div
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 10,
+      }}
       className="bg-white rounded-xl shadow-lg p-6"
     >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">{mode.name}</h2>
         <button
           onClick={handleStop}
-          className="p-2 hover:bg-gray-100 rounded-full"
+          className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
         >
           <X size={24} />
         </button>
       </div>
       <motion.div
         animate={{
-          rotate: isActive ? 360 : [-10, 10],
+          rotate: timeLeft > 0 ? 360 : [-15, 15],
           scale: timeLeft === 0 ? [1, 1.1] : 1,
         }}
         transition={{
           rotate: {
-            duration: isActive ? 2 : 0.2,
-            repeat: Infinity,
-            ease: isActive ? "linear" : "easeInOut",
-            repeatType: isActive ? "loop" : "reverse",
+            duration: timeLeft > 0 ? 1 : 0.3,
+            repeat: timeLeft > 0 ? Infinity : Infinity,
+            ease: timeLeft > 0 ? "backInOut" : "easeInOut",
+            repeatType: timeLeft === 0 ? "reverse" : undefined,
           },
           scale: {
-            duration: 0.3,
+            duration: 0.5,
             repeat: timeLeft === 0 ? Infinity : 0,
             repeatType: "reverse",
+            ease: "easeInOut",
           },
         }}
         className="w-48 h-48 mx-auto mb-6"
@@ -115,13 +107,13 @@ function EggTimer({ mode, onCancel }: TimerProps) {
         <div className="flex gap-4">
           <button
             onClick={handleSnooze}
-            className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+            className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 cursor-pointer"
           >
             Snooze
           </button>
           <button
             onClick={handleStop}
-            className="flex-1 bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600"
+            className="flex-1 bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 cursor-pointer"
           >
             Stop
           </button>

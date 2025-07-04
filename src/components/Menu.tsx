@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { EGG_MODES } from "../App";
 import type { EggMode } from "../App";
+import { EGG_MODES } from "../App";
 
-type MenuProps = {
+interface MenuProps {
   onSelectMode: (mode: EggMode) => void;
-};
+}
 
 function Menu({ onSelectMode }: MenuProps) {
   return (
@@ -16,7 +16,12 @@ function Menu({ onSelectMode }: MenuProps) {
             key={mode.name}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex flex-col items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100"
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 10,
+            }}
+            className="flex flex-col items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer"
             onClick={() => onSelectMode(mode)}
           >
             <img

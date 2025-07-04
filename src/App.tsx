@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Menu from "./components/Menu";
 import EggTimer from "./components/EggTimer";
+import Menu from "./components/Menu";
 
 export type EggMode = {
   name: string;
