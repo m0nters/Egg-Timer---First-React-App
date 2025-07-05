@@ -20,6 +20,7 @@ Live demo: https://egg-timer-ruby.vercel.app/
 - TypeScript
 - Tailwind CSS
 - Framer Motion
+- React Router
 - Vite
 - use-sound
 - Phosphor Icons
